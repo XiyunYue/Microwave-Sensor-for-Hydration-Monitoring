@@ -1,6 +1,7 @@
-function [bandwidth, amplitude, phase_syntony_test, amplitude_syntony_test, fre_syntony_test, fre_syntony_calculate] = new_function(n, dipole)
+function [L, bandwidth, amplitude, phase_syntony_test, amplitude_syntony_test, fre_syntony_test, fre_syntony_calculate] = new_function(n, dipole)
 c = 3 * (10 ^ 8);
-wavelength = (4 + 2 * 3 * n + 1.5) * 2 * 10 ^ ( - 3);
+L = 4 + 2 * 3 * n + 1.5;
+wavelength = L * 2 * 10 ^ ( - 3);
 freq = dipole(:, 1);
 amplitude_real = dipole(:, 2);
 amplitude_image = dipole(:, 3);
