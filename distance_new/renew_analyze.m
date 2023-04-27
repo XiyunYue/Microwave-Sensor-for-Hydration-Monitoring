@@ -1,12 +1,13 @@
-
-
+%% read first file
 n = 7;
 A = readmatrix("0");
 freq = 10^9 * A(:, 1);
-amplitude = zeros(length(A(:, 1)), n);
-phase = zeros(length(A(:, 1)), n);
 real_zero = A(:, 2);
 image_zeros = A(:, 3);
+
+%% zeros matric build
+amplitude = zeros(length(A(:, 1)), n);
+phase = zeros(length(A(:, 1)), n);
 amplitude_subtract = zeros(length(A(:, 1)), n);
 phase_subtract = zeros(length(A(:, 1)), n);
 Y = zeros(length(A(:, 1)), n);
@@ -15,18 +16,26 @@ amplitude_complex = zeros(1001, n);
 pesponse_time = zeros(1001, n); 
 pesponse_freq = zeros(1001, n); 
 amplitude_subtract_complex = zeros(1001, n);
-max_f = 8e9;
-t_length = max_f./(freq(2) - freq(1));
 
-% t = linspace(0, (length(freq) - 1) / (freq(2) - freq(1dif)), length(freq));
-t = (0 : t_length+1)*(1./max_f);
+%% calculate the time vector
+fs = 2 * max(freq); 
+%采样频率（即每秒钟采集的样本数）应至少等于信号中最高频率成分的2倍,fs
+dert_f = freq(2) - freq(1);
+t_length = fs ./ dert_f; 
+%Δf = fs / N 采样频率越高,频域分量间隔越小，从而使得频域表示更加精细。
+%采样样本的共个数N，Δf是频率分辨率,也代表一共N个频率阶段
+t = (0 : t_length + 1) * (1 ./ fs); 
+%采样时间从0到采样总数*采样间隔，采样间隔是最大频率的倒数
 y = exp(-(t - 3.5e-8).^2/(2 * 2e-9^2));
-sig = y .* sin(2 * pi * 2.5e9 * t);
-SIG = mag2db(abs(fft(sig)));
-f = 8e9 * (0:(t_length/2))/t_length;
-sig_f_real = real(sig_f);
-sig_f_imag = imag(sig_f);
+sig = y .* sin(2 * pi * 2.5e9 * t);%建立高斯包络时间信号
+SIG = mag2db(abs(fft(sig)));%进行dB变化
+f = fs * (0 : (t_length/2)) / t_length;
+%每个频率的分量取值为采样频率乘二分之一的采样总数
+sig_f_real = real(SIG);
+sig_f_imag = imag(SIG);
 
+
+%%
 for i = 1 : 2
     filename = strcat (int2str(i * 10));
     A = readmatrix(filename);
