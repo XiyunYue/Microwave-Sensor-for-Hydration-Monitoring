@@ -34,6 +34,16 @@ for j = 1 : n_parameter
         eval([parameter_name(parameter_change,:) ' = eval([(parameter_value(parameter_change,:))+"(j)"]);']);
         E_output = Transmission3layer(freq(i), SIG, s_eps, m_eps, ...
             s_thi, m_thi);
+        y1_abs = abs(E_output);
+        y2_abs = abs(SIG);
+        y2 = envelope(y1_abs);
+        x2 = find(y2 == max(y2));
+        y1 = envelope(y2_abs);
+        x1 = find(y1 == max(y1));
+        phase2 = angle(E_output(x2)); 
+        phase1 = angle(SIG(x1)); 
+        phase_diff = phase2 - phase1; % 信号的频率
+        toa(i, j) = phase_diff / (2 * pi * freq(i));
         E_result = 2 * merit.process.fd2td(E_output, freq, t);
         E_amplitude(i, j) = max(envelope(E_result)); 
     end
