@@ -37,8 +37,8 @@ for i = 1 : 3
     plot(Data_cst_boundary(:, 1), Data_cst_boundary(:, (3 * i - 1)), 'color', color(i, :), 'LineStyle', '--')
     h = line([x_min, x_min], [-40, y_min]);
     set(h, 'color', color(i, :), 'LineStyle', '-.', 'LineWidth', 1);
-    xlabel('frequency');
-    ylabel('dB');
+    xlabel('frequency(Hz)');
+    ylabel('S11(dB)');
     legend('Experiment', '','Simulation')
 end
 

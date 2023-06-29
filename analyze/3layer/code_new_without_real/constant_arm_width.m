@@ -2,7 +2,7 @@ close all
 clear
 %% 信号
 freq = 5e8:4e6:4e9;
-fs = 2 * max(freq); 
+fs = 90 * max(freq); 
 dert_f = freq(2) - freq(1);
 t_length = fs ./ dert_f; 
 t = (0 : t_length + 1) * (1 ./ fs); 
@@ -13,9 +13,9 @@ n_freq = length(freq);
 [s_eps, m_eps, s_thi, m_thi] = RefreshParameters();
 se = 25 : 2 : 35;
 me = 40 : 5 : 60;
-st = 0.005 : 0.007 : 0.03;
+st = 0.0005 : 0.0005 : 0.003;
 mt = 0.03 : 0.01 : 0.07;
-parameter_change = 3;
+parameter_change = 1;
 parameter_name = ['s_eps'; 'm_eps'; 's_thi'; 'm_thi'];
 parameter_value = ['se'; 'me'; 'st'; 'mt'];
 sig = y .* sin(2 * pi * 2e9 * t);
@@ -31,9 +31,9 @@ for j = 1 : n_parameter
         eval([parameter_name(parameter_change,:) ...
             ' = eval([(parameter_value(parameter_change,:))+"(j)"]);']);
         if parameter_change == 3
-            m_thi = 0.052 - s_thi;
+            m_thi = 0.052 - 2 * s_thi;
         elseif parameter_change == 4
-            s_thi = 0.052 - m_thi;
+            s_thi = 0.5 * (0.052 - m_thi);
         else
         end
             E_output(i, j) = Transmission3layer(freq(i), 1, s_eps, m_eps, ...
@@ -121,6 +121,7 @@ title(name);
 
 figure(5)
 plot(eval(parameter_value(parameter_change, :)), t_delay)
+
 title(name);
 xlabel(parameter_value(parameter_change, :));
 ylabel("Time");

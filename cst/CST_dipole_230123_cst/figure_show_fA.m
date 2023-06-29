@@ -13,7 +13,7 @@ function figure_show_fA(j, n, data)
 %     for i = 1 : n
 %         legend(n_start + n -1);
 %     end
-    xlabel('frequency');
+    xlabel('frequency(Hz)');
     ylabel('dB');
     title("Attenuation amplitude(dB) of different numbers antennas nodes");
 end
